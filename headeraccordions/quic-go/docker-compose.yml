@@ -1,0 +1,8 @@
+services:
+  quic-go:
+    build: ./server
+    container_name: ha-quic-go
+    ports:
+      - "8081:8081/udp"
+    mem_limit: ${MEM:-512m}
+    restart: "no"

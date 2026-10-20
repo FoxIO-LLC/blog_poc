@@ -1,0 +1,25 @@
+services:
+  backend-h3:
+    image: python:3.13-slim
+    container_name: ha-mitm-backend
+    working_dir: /app
+    volumes:
+      - ./server/backend_h3.py:/app/backend_h3.py:ro
+      - ./certs:/app/certs:ro
+    command: bash -c "pip install -q aioquic==1.7.0 && python backend_h3.py"
+
+  mitmproxy:
+    image: mitmproxy/mitmproxy:12.2.3
+    container_name: ha-mitmproxy
+    depends_on:
+      - backend-h3
+    ports:
+      - "8087:8443/tcp"
+      - "8087:8443/udp"
+    volumes:
+      - ./certs:/app/certs:ro
+    command: >
+      mitmdump --mode reverse:https://backend-h3:4443@8443 --set ssl_insecure=true
+      --set connection_strategy=lazy --certs *=/app/certs/combined.pem
+    mem_limit: ${MEM:-512m}
+    restart: "no"

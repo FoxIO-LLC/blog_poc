@@ -1,0 +1,10 @@
+services:
+  bun:
+    build: ./server
+    image: ha-bun-server
+    container_name: ha-bun
+    ports:
+      - "8085:443/udp"
+      - "8085:443/tcp"
+    mem_limit: ${MEM:-2g}
+    restart: "no"

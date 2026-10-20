@@ -1,0 +1,9 @@
+services:
+  h3:
+    build: ./server
+    image: ha-h3-server
+    container_name: ha-h3
+    ports:
+      - "8088:8088/udp"
+    mem_limit: ${MEM:-512m}
+    restart: "no"

@@ -1,0 +1,8 @@
+services:
+  lsquic:
+    image: litespeedtech/openlitespeed@sha256:7f236aad65b1e09cb5191177529d31a8b2559cfb5d82612dd8e0cb11ce0c601d
+    container_name: ha-lsquic
+    ports:
+      - "8084:443/udp"
+    mem_limit: ${MEM:-256m}
+    restart: "no"

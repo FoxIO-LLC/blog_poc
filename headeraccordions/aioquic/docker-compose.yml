@@ -1,0 +1,13 @@
+services:
+  aioquic:
+    image: python:3.13-slim
+    container_name: ha-aioquic
+    working_dir: /app
+    volumes:
+      - ./server/server.py:/app/server.py:ro
+      - ./certs:/app/certs:ro
+    command: bash -c "pip install -q aioquic==1.7.0 && python server.py --host 0.0.0.0 --port 4433 --cert certs/cert.pem --key certs/key.pem"
+    ports:
+      - "8086:4433/udp"
+    mem_limit: ${MEM:-256m}
+    restart: "no"

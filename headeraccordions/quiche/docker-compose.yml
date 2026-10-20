@@ -1,0 +1,9 @@
+services:
+  quiche:
+    image: ha-quiche-server
+    build: ./server
+    container_name: ha-quiche
+    ports:
+      - "8083:4433/udp"
+    mem_limit: ${MEM:-512m}
+    restart: "no"
